@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helados Chalco Naucalpan — Una experiencia diferente servida en la cáscara de la fruta</title>
+    <meta name="description" content="Descubre Helados Chalco Naucalpan: una experiencia única servida en la cáscara natural de la fruta. Ideal para compartir en familia.">
+    <meta name="keywords" content="Helados Naucalpan, Heladería Naucalpan, Helados en cáscara, Helados de fruta, Helados Chalco Naucalpan">
+    
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Helados Chalco Naucalpan — Una Experiencia Única">
+    <meta property="og:description" content="Muchos de nuestros helados se presentan directamente en la cáscara natural de la fruta. ¡Una forma diferente de disfrutar!">
+    <meta property="og:url" content="https://maps.app.goo.gl/xCgn33bQJETmBKrv7">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        chalco: {
+                            blue: '#3D4D9A',
+                            darkblue: '#2D3D82',
+                            warmwhite: '#FFFDF8',
+                            cream: '#F8F2E8',
+                            champagne: '#EED7B2',
+                            honey: '#E6B45C',
+                            cacao: '#5C4335',
+                            leaf: '#6E8B55'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- React, ReactDOM y Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Schema.org / JSON-LD LocalBusiness SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "IceCreamShop",
+      "name": "Helados Chalco Naucalpan",
+      "image": "https://maps.app.goo.gl/xCgn33bQJETmBKrv7",
+      "telephone": "5551368112",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Lic. Isidro Fabela 11, Emiliano Zapata",
+        "addressLocality": "Naucalpan de Juárez",
+        "addressRegion": "Estado de México",
+        "postalCode": "53426",
+        "addressCountry": "MX"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 19.477,
+        "longitude": -99.233
+      },
+      "url": "https://maps.app.goo.gl/xCgn33bQJETmBKrv7",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "11:00",
+        "closes": "23:30"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "11"
+      }
+    }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FEF5EA;
+            color: #5C4335;
+            overflow-x: hidden;
+        }
+        .hero-bg {
+            background: radial-gradient(circle at top left, rgba(238, 215, 178, 0.35), transparent 22%),
+                        radial-gradient(circle at bottom right, rgba(230, 180, 92, 0.18), transparent 25%),
+                        linear-gradient(180deg, #FBF1E6 0%, #F8E8DA 50%, #FFF9F2 100%);
+        }
+        .glass-panel {
+            background: rgba(255, 253, 248, 0.90);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid #EED7B2;
+        }
+        .float-element {
+            animation: floating 6s ease-in-out infinite;
+        }
+        .float-element-slow {
+            animation: floating 9s ease-in-out infinite;
+            animation-delay: 1.5s;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-14px) rotate(4deg) scale(1.05); }
+            100% { transform: translateY(0px) rotate(0deg) scale(1); }
+        }
+    </style>
+</head>
+<body class="selection:bg-chalco-blue selection:text-white">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.motion || window.Motion;
+
+        const MAPS_URL = "https://maps.app.goo.gl/xCgn33bQJETmBKrv7";
+        const WHATSAPP_URL = "https://wa.me/525551368112?text=Hola,%20me%20gustar%C3%ADa%20pedir%20informaci%C3%B3n%20sobre%20sus%20helados.";
+        const PHONE_NUM = "tel:+525551368112";
+
+        const FloatingFruitBackground = () => {
+            return (
+                <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                    <div className="absolute top-[8%] left-[6%] text-5xl float-element opacity-80">🍊</div>
+                    <div className="absolute top-[26%] left-[4%] text-4xl float-element-slow opacity-75">🌽</div>
+                    <div className="absolute top-[44%] left-[10%] text-5xl float-element opacity-80">🥥</div>
+                    <div className="absolute top-[62%] left-[6%] text-4xl float-element-slow opacity-75">🍈</div>
+                    <div className="absolute top-[10%] right-[6%] text-5xl float-element-slow opacity-80">🍍</div>
+                    <div className="absolute top-[28%] right-[4%] text-4xl float-element opacity-75">🍎</div>
+                    <div className="absolute top-[44%] right-[10%] text-5xl float-element-slow opacity-80">🥭</div>
+                    <div className="absolute top-[62%] right-[6%] text-4xl float-element opacity-75">🍫</div>
+                </div>
+            );
+        };
+
+        const Navbar = () => {
+            const [scrolled, setScrolled] = useState(false);
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 20);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            return (
+                <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-3 glass-panel shadow-sm' : 'py-5 bg-transparent'}`}>
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                        <a href="#" className="flex items-center gap-3 group">
+                            <div className="w-12 h-12 rounded-full bg-white overflow-hidden shadow-md">
+                                <img src="./helados%20logo%20png.png" alt="Logo Helados Chalco" className="w-full h-full object-contain" />
+                            </div>
+                            <div>
+                                <span className="font-serif font-bold text-xl tracking-tight text-chalco-blue block leading-none">Helados Chalco</span>
+                                <span className="text-[10px] uppercase tracking-widest text-chalco-honey font-extrabold">Naucalpan</span>
+                            </div>
+                        </a>
+
+                        <nav className="hidden md:flex items-center gap-8 font-semibold text-sm text-chalco-cacao">
+                            <a href="#inicio" className="hover:text-chalco-blue transition-colors">Inicio</a>
+                            <a href="#nosotros" className="hover:text-chalco-blue transition-colors">Nosotros</a>
+                            <a href="#ventajas" className="hover:text-chalco-blue transition-colors">¿Por qué elegirnos?</a>
+                            <a href="#menu" className="hover:text-chalco-blue transition-colors">Menú</a>
+                            <a href="#galeria" className="hover:text-chalco-blue transition-colors">Galería</a>
+                            <a href="#opiniones" className="hover:text-chalco-blue transition-colors">Opiniones</a>
+                            <a href="#contacto" className="hover:text-chalco-blue transition-colors">Ubicación</a>
+                        </nav>
+
+                        <div className="hidden md:flex items-center gap-3">
+                            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-chalco-champagne hover:bg-chalco-honey text-chalco-blue px-4 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all shadow-xs border border-chalco-champagne">
+                                <i data-lucide="message-circle" className="w-4 h-4"></i> WhatsApp
+                            </a>
+                            <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-chalco-blue hover:bg-chalco-darkblue text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg">
+                                <i data-lucide="map-pin" className="w-4 h-4"></i> Cómo llegar
+                            </a>
+                        </div>
+
+                        <button 
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
+                            className="md:hidden p-2.5 rounded-xl bg-chalco-cream text-chalco-blue border border-chalco-champagne shadow-xs"
+                            aria-label="Abrir menú"
+                        >
+                            <i data-lucide={mobileMenuOpen ? "x" : "menu"} className="w-6 h-6"></i>
+                        </button>
+                    </div>
+
+                    {mobileMenuOpen && (
+                        <motion.div 
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="md:hidden absolute top-full left-0 right-0 glass-panel shadow-xl p-6 flex flex-col gap-4 border-t border-chalco-champagne"
+                        >
+                            <a href="#inicio" onClick={() => setMobileMenuOpen(false)} className="font-semibold text-chalco-cacao py-2 border-b border-chalco-champagne/40">Inicio</a>
+                            <a href="#nosotros" onClick={() => setMobileMenuOpen(false)} className="font-semibold text-chalco-cacao py-2 border-b border-chalco-champagne/40">Nosotros</a>
+                            <a href="#ventajas" onClick={() => setMobileMenuOpen(false)} className="font-semibold text-chalco-cacao py-2 border-b border-chalco-champagne/40">¿Por qué elegirnos?</a>
+                            <a href="#menu" onClick={() => setMobileMenuOpen(false)} className="font-semibold text-chalco-cacao py-2 border-b border-chalco-champagne/40">Menú</a>
+                            <a href="#galeria" onClick={() => setMobileMenuOpen(false)} className="font-semibold text-chalco-cacao py-2 border-b border-chalco-champagne/40">Galería</a>
+                            <a href="#opiniones" onClick={() => setMobileMenuOpen(false)} className="font-semibold text-chalco-cacao py-2 border-b border-chalco-champagne/40">Opiniones</a>
+                            <a href="#contacto" onClick={() => setMobileMenuOpen(false)} className="font-semibold text-chalco-cacao py-2">Ubicación</a>
+                            <div className="flex flex-col gap-2 pt-2">
+                                <a href={WHATSAPP_URL} target="_blank" className="w-full text-center bg-chalco-champagne hover:bg-chalco-honey text-chalco-blue font-bold py-3 rounded-xl flex items-center justify-center gap-2 border border-chalco-champagne">
+                                    <i data-lucide="message-circle" className="w-5 h-5"></i> Pedir por WhatsApp
+                                </a>
+                                <a href={MAPS_URL} target="_blank" className="w-full text-center bg-chalco-blue hover:bg-chalco-darkblue text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-md">
+                                    <i data-lucide="map-pin" className="w-5 h-5"></i> Cómo llegar
+                                </a>
+                            </div>
+                        </motion.div>
+                    )}
+                </header>
+            );
+        };
+
+        const Hero = () => {
+            return (
+                <section id="inicio" className="relative min-h-screen pt-32 pb-20 flex items-center justify-center hero-bg overflow-hidden">
+                    <FloatingFruitBackground />
+
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                        <motion.div 
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="text-left"
+                        >
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-chalco-cream border border-chalco-champagne text-chalco-blue text-xs font-extrabold uppercase tracking-widest mb-6">
+                                <span className="w-2 h-2 rounded-full bg-chalco-honey animate-pulse"></span>
+                                Una Presentación Que Sorprende
+                            </div>
+                            
+                            <h1 className="text-4xl sm:text-6xl font-serif font-extrabold text-chalco-blue leading-tight mb-6">
+                                Helados Chalco <br/>
+                                <span className="text-chalco-cacao font-normal italic">
+                                    Naucalpan
+                                </span>
+                            </h1>
+
+                            <p className="text-lg sm:text-xl text-chalco-cacao mb-8 leading-relaxed font-normal max-w-xl">
+                                <span className="block">Servidos directamente en la cáscara natural de la fruta.</span>
+                                <span className="block">Una experiencia refrescante y única para compartir.</span>
+                            </p>
+
+                            <div className="flex flex-wrap gap-4 items-center">
+                                <a href="#menu" className="bg-chalco-blue hover:bg-chalco-darkblue text-white font-bold px-8 py-4 rounded-full text-xs uppercase tracking-wider shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-3">
+                                    <i data-lucide="utensils" className="w-4 h-4"></i> Ver menú de sabores
+                                </a>
+                                <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="bg-chalco-champagne hover:bg-chalco-honey text-chalco-blue font-bold px-8 py-4 rounded-full text-xs uppercase tracking-wider shadow-xs hover:shadow-md hover:scale-105 transition-all flex items-center gap-3 border border-chalco-champagne">
+                                    <i data-lucide="navigation" className="w-4 h-4"></i> Cómo llegar
+                                </a>
+                            </div>
+
+                            <div className="mt-12 pt-8 border-t border-chalco-champagne/60 flex items-center gap-6">
+                                <div className="flex items-center gap-2">
+                                    <div className="flex text-chalco-honey">
+                                        {'★'.repeat(5)}
+                                    </div>
+                                    <span className="font-bold text-chalco-blue text-sm">5.0 en Google</span>
+                                </div>
+                                <div className="h-4 w-px bg-chalco-champagne"></div>
+                                <div className="text-chalco-cacao text-xs font-semibold">
+                                    Calidad en cada detalle
+                                </div>
+                            </div>
+                        </motion.div>
+
+                        <motion.div 
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="relative flex justify-center items-center"
+                        >
+                            <div className="w-80 h-80 sm:w-[420px] sm:h-[420px] rounded-full bg-chalco-cream absolute blur-2xl -z-10"></div>
+
+                            <div className="relative w-full max-w-md aspect-square rounded-3xl bg-chalco-cream p-8 shadow-xl border border-chalco-champagne flex flex-col items-center justify-center text-center overflow-hidden">
+                                    <div className="w-32 h-32 rounded-full bg-chalco-champagne/60 overflow-hidden mb-4 shadow-inner float-element">
+                                    <img src="./helados%20logo%20png.png" alt="Logo Helados Chalco" className="w-full h-full object-contain" />
+                                </div>
+                                
+                                <h3 className="font-serif font-bold text-2xl text-chalco-blue mb-1">Servidos en la Fruta</h3>
+                                <p className="text-xs text-chalco-cacao/80 max-w-xs mb-4">El ingrediente principal es la experiencia</p>
+
+                                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-chalco-blue bg-chalco-warmwhite px-4 py-2 rounded-full border border-chalco-champagne shadow-xs">
+                                    <i data-lucide="sparkles" className="w-4 h-4 text-chalco-honey"></i> Presentación Única
+                                </span>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
+        const AboutMemorable = () => {
+            return (
+                <section id="nosotros" className="py-24 bg-chalco-cream relative border-t border-b border-chalco-champagne/60">
+                    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="space-y-6 bg-chalco-warmwhite p-8 sm:p-14 rounded-3xl border border-chalco-champagne shadow-sm"
+                        >
+                            <span className="text-chalco-blue font-extrabold text-xs uppercase tracking-widest bg-chalco-champagne/50 px-4 py-1.5 rounded-full border border-chalco-champagne">
+                                Nuestra Filosofía
+                            </span>
+                            
+                            <h2 className="text-3xl sm:text-5xl font-serif font-bold text-chalco-blue leading-tight">
+                                Mucho más que un helado
+                            </h2>
+
+                            <div className="w-16 h-1 bg-chalco-honey mx-auto rounded-full"></div>
+
+                            <p className="text-chalco-cacao text-base sm:text-lg leading-relaxed max-w-3xl mx-auto font-normal">
+                                En <strong>Helados Chalco Naucalpan</strong> creemos que un buen helado también crea momentos.
+                            </p>
+                            <p className="text-chalco-cacao text-base sm:text-lg leading-relaxed max-w-3xl mx-auto font-normal mt-4">
+                                Queremos que cada visita sea una oportunidad para disfrutar, convivir y llevarte un recuerdo agradable, ya sea con tu familia, amigos o simplemente dándote un gusto.
+                            </p>
+                            <p className="text-chalco-cacao text-base sm:text-lg leading-relaxed max-w-3xl mx-auto font-normal mt-4">
+                                Nos esforzamos por ofrecer productos de calidad, una atención cercana y un ambiente que haga de cada visita una experiencia que quieras repetir.
+                            </p>
+
+                            <div className="pt-4 flex flex-wrap justify-center gap-4">
+                                <span className="inline-flex items-center gap-2 text-xs font-bold text-chalco-blue bg-chalco-cream px-4 py-2 rounded-full border border-chalco-champagne">
+                                    🍊 Cáscara Natural
+                                </span>
+                                <span className="inline-flex items-center gap-2 text-xs font-bold text-chalco-blue bg-chalco-cream px-4 py-2 rounded-full border border-chalco-champagne">
+                                    🍓 Frescura Total
+                                </span>
+                                <span className="inline-flex items-center gap-2 text-xs font-bold text-chalco-blue bg-chalco-cream px-4 py-2 rounded-full border border-chalco-champagne">
+                                    👨‍👩‍👧‍👦 Para Compartir
+                                </span>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Features = () => {
+            const officialFeatures = [
+                {
+                    icon: "citrus",
+                    emoji: "🍍",
+                    title: "Presentación Única",
+                    desc: "Muchos de nuestros helados se sirven directamente en la cáscara natural de la fruta, creando una experiencia diferente y memorable."
+                },
+                {
+                    icon: "sparkles",
+                    emoji: "🍓",
+                    title: "Ingredientes Frescos",
+                    desc: "Seleccionamos cuidadosamente nuestros ingredientes para ofrecer sabores que destacan por su calidad y frescura."
+                },
+                {
+                    icon: "users",
+                    emoji: "👨‍👩‍👧‍👦",
+                    title: "Ideal para Compartir",
+                    desc: "Una experiencia perfecta para disfrutar con amigos, familia o en cualquier ocasión especial."
+                },
+                {
+                    icon: "credit-card",
+                    emoji: "💳",
+                    title: "Todos los Métodos de Pago",
+                    desc: "Aceptamos efectivo 💵, tarjetas de débito y crédito 💳, así como transferencias bancarias 📲 para que elijas la forma de pago que prefieras."
+                },
+                {
+                    icon: "star",
+                    emoji: "⭐",
+                    title: "Excelente Atención",
+                    desc: "Nos gusta que cada visita sea una experiencia agradable, ofreciendo un servicio cercano y atento."
+                },
+                {
+                    icon: "gift",
+                    emoji: "🎉",
+                    title: "Club Helados Chalco",
+                    desc: "Haz que cada visita cuente. Descarga tu tarjeta de lealtad y accede a recompensas exclusivas pensadas para agradecer la preferencia de nuestros clientes.",
+                    actionText: "Descargar Tarjeta",
+                    actionUrl: "./Fotos%20Pagina%20Web/Tarjeta%20Lealtad.png"
+                }
+            ];
+
+            return (
+                <section id="ventajas" className="py-24 bg-chalco-warmwhite relative">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center max-w-2xl mx-auto mb-16">
+                            <h2 className="text-3xl sm:text-5xl font-serif font-bold text-chalco-blue mt-3">¿Por qué elegirnos?</h2>
+                            <p className="text-chalco-cacao mt-4">Cuidamos cada aspecto para que tu única preocupación sea disfrutar.</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+                            {officialFeatures.map((item, idx) => (
+                                <motion.div 
+                                    key={idx}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: idx * 0.08 }}
+                                    viewport={{ once: true }}
+                                    className={`bg-chalco-cream p-8 rounded-3xl border border-chalco-champagne shadow-xs hover:shadow-md transition-all group flex flex-col justify-between ${idx === 3 || idx === 4 ? 'lg:col-span-1' : ''}`}
+                                >
+                                    <div>
+                                        <div className="flex items-center justify-between mb-6">
+                                            <div className="w-12 h-12 rounded-2xl bg-chalco-blue flex items-center justify-center text-white shadow-xs group-hover:bg-chalco-darkblue transition-colors">
+                                                <i data-lucide={item.icon} className="w-5 h-5"></i>
+                                            </div>
+                                            <span className="text-2xl">{item.emoji}</span>
+                                        </div>
+                                        <h3 className="font-serif font-bold text-xl text-chalco-blue mb-3">{item.title}</h3>
+                                        <p className="text-chalco-cacao text-sm leading-relaxed">{item.desc}</p>
+                                        {item.actionUrl && (
+                                            <a
+                                                href={item.actionUrl}
+                                                download
+                                                className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-chalco-blue text-white px-4 py-3 text-xs uppercase tracking-wider font-bold shadow-md hover:bg-chalco-darkblue transition-all"
+                                            >
+                                                <i data-lucide="download" className="w-4 h-4"></i>
+                                                {item.actionText}
+                                            </a>
+                                        )}
+                                    </div>
+                                    <div className="mt-6 pt-4 border-t border-chalco-champagne/40 text-[10px] uppercase tracking-wider font-extrabold text-chalco-honey">
+                                        Helados Chalco Naucalpan
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Menu = () => {
+            const flavors = [
+                { name: "Naranja", emoji: "🍊", seasonal: false, desc: "Frescura cítrica servida en su cáscara natural." },
+                { name: "Elote", emoji: "🌽", seasonal: false, desc: "Una opción única para descubrir nuevos sabores." },
+                { name: "Coco", emoji: "🥥", seasonal: false, desc: "Suave, tropical y servido en un coco natural." },
+                { name: "Piña", emoji: "🍍", seasonal: false, desc: "Dulzura tropical con una presentación que sorprende." },
+                { name: "Melón", emoji: "🍈", seasonal: false, desc: "Fresco, ligero y perfecto para cualquier momento." },
+                { name: "Manzana", emoji: "🍎", seasonal: false, desc: "Una forma diferente de disfrutar el sabor de la manzana." },
+                { name: "Mango", emoji: "🥭", seasonal: true, desc: "El sabor tropical que todos esperan cada temporada." },
+                { name: "Mamey", emoji: "🏉", seasonal: true, desc: "Textura cremosa y el inconfundible sabor del mamey." },
+                { name: "Cacao", emoji: "🍫", seasonal: true, desc: "Intenso sabor a cacao para los verdaderos amantes del chocolate." }
+            ];
+
+            return (
+                <section id="menu" className="py-24 bg-chalco-cream relative border-t border-b border-chalco-champagne/60">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center max-w-2xl mx-auto mb-16">
+                            <h2 className="text-3xl sm:text-5xl font-serif font-bold text-chalco-blue mt-3">Variedad de Sabores</h2>
+                            <p className="text-chalco-cacao mt-4">Una experiencia de frescura servida para sorprender tus sentidos.</p>
+                        </div>
+
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {flavors.map((item, idx) => (
+                                <motion.div 
+                                    key={idx}
+                                    initial={{ opacity: 0, scale: 0.96 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: idx * 0.04 }}
+                                    viewport={{ once: true }}
+                                    className="bg-chalco-warmwhite rounded-3xl p-6 border border-chalco-champagne shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
+                                >
+                                    <div>
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div className="w-16 h-16 rounded-2xl bg-chalco-cream flex items-center justify-center text-4xl shadow-inner group-hover:scale-105 transition-transform border border-chalco-champagne/50">
+                                                {item.emoji}
+                                            </div>
+                                            {item.seasonal ? (
+                                                <span className="text-[10px] uppercase tracking-wider font-extrabold bg-chalco-champagne text-chalco-cacao px-3 py-1 rounded-full border border-chalco-honey/50">
+                                                    Por Temporada
+                                                </span>
+                                            ) : (
+                                                <span className="text-[10px] uppercase tracking-wider font-bold bg-chalco-leaf/10 text-chalco-leaf px-3 py-1 rounded-full">
+                                                    Disponible
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <h3 className="font-serif font-bold text-2xl text-chalco-blue mb-2">{item.name}</h3>
+                                        <p className="text-chalco-cacao text-sm mb-6 leading-relaxed">{item.desc}</p>
+                                    </div>
+
+                                    <div className="pt-4 border-t border-chalco-champagne/60 flex items-center justify-between">
+                                        <span className="text-xs text-chalco-cacao/70 font-medium">
+                                            {['Mango', 'Mamey', 'Cacao'].includes(item.name) ? 'Fruta o Copa, según disponibilidad.' : 'Presentación en Fruta'}
+                                        </span>
+                                        <a href={WHATSAPP_URL} target="_blank" className="text-xs font-bold text-chalco-blue hover:text-chalco-darkblue flex items-center gap-1 transition-colors">
+                                            Consultar <i data-lucide="chevron-right" className="w-4 h-4"></i>
+                                        </a>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        <div className="mt-16 text-center">
+                            <p className="text-xs text-chalco-cacao/70 mb-4">* La disponibilidad de sabores en cáscara de fruta varía según temporada.</p>
+                            <a href={WHATSAPP_URL} target="_blank" className="inline-flex items-center gap-2 bg-chalco-blue hover:bg-chalco-darkblue text-white font-bold px-8 py-4 rounded-full text-xs uppercase tracking-wider shadow-lg hover:shadow-xl transition-all">
+                                <i data-lucide="message-circle" className="w-4 h-4"></i> Preguntar disponibilidad por WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Gallery = () => {
+            const [selectedImg, setSelectedImg] = useState(null);
+
+            const galleryItems = [
+                { title: "Piña", subtitle: "", image: "./Fotos%20Pagina%20Web/Helado%20de%20Pi%C3%B1a%20web.png" },
+                { title: "Manzana", subtitle: "", image: "./Fotos%20Pagina%20Web/Helado%20de%20Manzana%20web.png" },
+                { title: "Coco", subtitle: "", image: "./Fotos%20Pagina%20Web/Helado%20de%20Coco%20web.png" },
+                { title: "Elote", subtitle: "", image: "./Fotos%20Pagina%20Web/Helado%20de%20Helote%20web.png" },
+                { title: "Naranja", subtitle: "", image: "./Fotos%20Pagina%20Web/Helado%20de%20Naranja%20web.png" },
+                { title: "Melon", subtitle: "", image: "./Fotos%20Pagina%20Web/Helado%20de%20Melon%20web.png" },
+                { title: "Mamey", subtitle: "", image: "./Fotos%20Pagina%20Web/Helado%20de%20Mamey%20web.png" },
+                { title: "Mango", subtitle: "", image: "./Fotos%20Pagina%20Web/Helado%20de%20Mango%20web.png" },
+                { title: "Cacao", subtitle: "", image: "./Fotos%20Pagina%20Web/Helado%20de%20Cacao%20web.png" },
+            ];
+
+            return (
+                <section id="galeria" className="py-24 bg-chalco-cream relative">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center max-w-2xl mx-auto mb-16">
+                            <span className="text-chalco-blue font-bold text-xs uppercase tracking-widest bg-chalco-champagne/50 px-3 py-1 rounded-full border border-chalco-champagne">Una experiencia que se disfruta desde la vista</span>
+                            <h2 className="text-3xl sm:text-5xl font-serif font-bold text-chalco-blue mt-3">Galería de Productos</h2>
+                            <p className="text-chalco-cacao mt-4">Explora algunas de las presentaciones que distinguen a Helados Chalco y convierten cada visita en una experiencia memorable.</p>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                            {galleryItems.map((item, idx) => (
+                                <motion.div 
+                                    key={idx}
+                                    whileHover={{ scale: 1.02 }}
+                                    onClick={() => setSelectedImg(item)}
+                                    className="cursor-pointer rounded-3xl bg-chalco-warmwhite overflow-hidden border border-chalco-champagne shadow-xs hover:shadow-md transition-all flex flex-col items-center justify-between text-center group"
+                                >
+                                    <div className="w-full aspect-square overflow-hidden">
+                                        <img src={item.image} alt={item.title} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" />
+                                    </div>
+                                    <div className="p-6">
+                                        <h4 className="font-serif font-bold text-lg text-chalco-blue mb-2">{item.title}</h4>
+                                        <p className="text-xs text-chalco-cacao leading-relaxed">{item.subtitle}</p>
+                                    </div>
+                                    <div className="w-full border-t border-chalco-champagne/60 px-6 py-4">
+                                        <span className="text-[10px] font-bold text-chalco-honey uppercase tracking-wider">Ver Detalle</span>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <AnimatePresence>
+                        {selectedImg && (
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={() => setSelectedImg(null)}
+                                className="fixed inset-0 z-50 bg-stone-900/80 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
+                            >
+                                <motion.div 
+                                    initial={{ scale: 0.9 }}
+                                    animate={{ scale: 1 }}
+                                    exit={{ scale: 0.9 }}
+                                    className="bg-chalco-warmwhite p-8 rounded-3xl max-w-md w-full text-center shadow-2xl relative border border-chalco-champagne"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <button 
+                                        onClick={() => setSelectedImg(null)}
+                                        className="absolute top-4 right-4 p-2 text-chalco-cacao/60 hover:text-chalco-cacao"
+                                    >
+                                        <i data-lucide="x" className="w-6 h-6"></i>
+                                    </button>
+                                    <div className="w-full h-72 overflow-hidden rounded-3xl shadow-inner mb-6">
+                                        <img src={selectedImg.image} alt={selectedImg.title} className="w-full h-full object-contain" />
+                                    </div>
+                                    <h3 className="font-serif font-bold text-2xl text-chalco-blue">{selectedImg.title}</h3>
+                                    <p className="text-chalco-cacao text-sm mt-2">{selectedImg.subtitle}</p>
+                                    <div className="mt-6 pt-6 border-t border-chalco-champagne">
+                                        <a href={MAPS_URL} target="_blank" className="w-full bg-chalco-blue hover:bg-chalco-darkblue text-white font-bold py-3.5 px-6 rounded-full inline-block text-xs uppercase tracking-wider shadow-md">
+                                            Visitar Sucursal
+                                        </a>
+                                    </div>
+                                </motion.div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </section>
+            );
+        };
+
+        const Reviews = () => {
+            const googleReviews = [
+                {
+                    name: "Cliente Satisfecho",
+                    rating: 5,
+                    text: "Excelente servicio y sabor inigualable. Los helados servidos en la cáscara de fruta son simplemente espectaculares. Volveré con toda mi familia."
+                },
+                {
+                    name: "Visitante Local",
+                    rating: 5,
+                    text: "La atención es sumamente cálida y los helados deliciosos. La presentación de piña y mamey superó mis expectativas."
+                },
+                {
+                    name: "Familia Naucalpan",
+                    rating: 5,
+                    text: "Un lugar perfecto para compartir un postre diferente. Muy recomendado el helado de elote y coco."
+                }
+            ];
+
+            return (
+                <section id="opiniones" className="py-24 bg-chalco-warmwhite relative border-t border-chalco-champagne/60">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center max-w-2xl mx-auto mb-16">
+                            <h2 className="text-3xl sm:text-5xl font-serif font-bold text-chalco-blue">
+                                Lo que dicen en Google
+                            </h2>
+                            <div className="text-2xl text-chalco-honey my-2">
+                                ⭐⭐⭐⭐⭐
+                            </div>
+                            <div className="text-4xl font-extrabold text-chalco-blue font-serif mb-1">
+                                5.0
+                            </div>
+                            <p className="text-sm font-semibold text-chalco-cacao">
+                                Basado en 11 opiniones oficiales
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {googleReviews.map((rev, idx) => (
+                                <motion.div 
+                                    key={idx}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: idx * 0.1 }}
+                                    viewport={{ once: true }}
+                                    className="p-8 rounded-3xl bg-chalco-cream border border-chalco-champagne shadow-xs flex flex-col justify-between"
+                                >
+                                    <div>
+                                        <div className="flex text-chalco-honey mb-4">
+                                            {'★'.repeat(rev.rating)}
+                                        </div>
+                                        <p className="text-chalco-cacao italic text-sm leading-relaxed mb-6">"{rev.text}"</p>
+                                    </div>
+                                    <div className="flex items-center gap-3 pt-4 border-t border-chalco-champagne/60">
+                                        <div className="w-10 h-10 rounded-full bg-chalco-blue text-white flex items-center justify-center font-bold text-sm">
+                                            {rev.name.charAt(0)}
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-chalco-blue text-xs">{rev.name}</h4>
+                                            <span className="text-[10px] text-chalco-cacao/70">Opinión pública de Google</span>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        <div className="mt-16 text-center">
+                            <a 
+                                href={MAPS_URL} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-3 bg-chalco-blue hover:bg-chalco-darkblue text-white font-bold px-8 py-4 rounded-full text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition-all"
+                            >
+                                <i data-lucide="external-link" className="w-4 h-4 text-chalco-champagne"></i> Ver todas las opiniones en Google
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const ContactAndMap = () => {
+            return (
+                <section id="contacto" className="py-24 bg-chalco-cream relative border-t border-chalco-champagne/60">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid lg:grid-cols-12 gap-12 items-center">
+                            <motion.div 
+                                initial={{ opacity: 0, x: -30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                className="lg:col-span-5 space-y-8"
+                            >
+                                <div>
+                                    <span className="text-chalco-blue font-bold text-xs uppercase tracking-widest bg-chalco-champagne/50 px-3 py-1 rounded-full border border-chalco-champagne">Visítanos</span>
+                                    <h2 className="text-3xl sm:text-5xl font-serif font-bold text-chalco-blue mt-3">Ubicación y Horarios</h2>
+                                    <p className="text-chalco-cacao mt-2">Ven a conocer una forma diferente de disfrutar tu helado en Naucalpan.</p>
+                                </div>
+
+                                <div className="space-y-6">
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-12 h-12 rounded-2xl bg-chalco-blue text-white flex items-center justify-center shrink-0 shadow-xs">
+                                            <i data-lucide="map-pin" className="w-6 h-6"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-chalco-blue text-base">Dirección Oficial</h4>
+                                            <p className="text-chalco-cacao text-sm leading-relaxed mt-1">
+                                                Lic. Isidro Fabela 11, Emiliano Zapata, 53426 Naucalpan de Juárez, Estado de México.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-12 h-12 rounded-2xl bg-chalco-honey text-white flex items-center justify-center shrink-0 shadow-xs">
+                                            <i data-lucide="clock" className="w-6 h-6"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-chalco-blue text-base">Horarios de Atención</h4>
+                                            <p className="text-chalco-leaf font-bold text-sm mt-1">🟢 Abierto hoy</p>
+                                            <p className="text-chalco-cacao text-sm">Cierra a las 11:30 PM</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-12 h-12 rounded-2xl bg-chalco-champagne text-chalco-blue flex items-center justify-center shrink-0 shadow-xs border border-chalco-champagne">
+                                            <i data-lucide="phone" className="w-6 h-6"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-chalco-blue text-base">Teléfono de Contacto</h4>
+                                            <p className="text-chalco-cacao text-sm mt-1">55 5136 8112</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-3 pt-4">
+                                    <a href={PHONE_NUM} className="bg-chalco-cacao hover:bg-stone-800 text-white font-bold py-3.5 px-4 rounded-2xl text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-xs transition-colors">
+                                        <i data-lucide="phone" className="w-4 h-4"></i> Llamar
+                                    </a>
+                                    <a href={WHATSAPP_URL} target="_blank" className="bg-chalco-champagne hover:bg-chalco-honey text-chalco-blue font-bold py-3.5 px-4 rounded-2xl text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-xs transition-colors border border-chalco-champagne">
+                                        <i data-lucide="message-circle" className="w-4 h-4"></i> WhatsApp
+                                    </a>
+                                    <a href={MAPS_URL} target="_blank" className="col-span-2 bg-chalco-blue hover:bg-chalco-darkblue text-white font-bold py-4 px-6 rounded-2xl text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-md transition-colors">
+                                        <i data-lucide="navigation" className="w-4 h-4"></i> Cómo Llegar (Google Maps)
+                                    </a>
+                                </div>
+                            </motion.div>
+
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                className="lg:col-span-7"
+                            >
+                                <div className="rounded-3xl bg-chalco-warmwhite border border-chalco-champagne shadow-lg p-4">
+                                    <div className="w-full h-[400px] rounded-2xl overflow-hidden relative">
+                                        <iframe 
+                                            title="Mapa Helados Chalco Naucalpan"
+                                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3761.534267232258!2d-99.2355!3d19.477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDI4JzM3LjIiTiA5OcKwMTQnMDcuOCJX!5e0!3m2!1ses!2smx!4v1650000000000!5m2!1ses!2smx" 
+                                            width="100%" 
+                                            height="100%" 
+                                            style={{ border: 0 }} 
+                                            allowFullScreen="" 
+                                            loading="lazy" 
+                                            referrerPolicy="no-referrer-when-downgrade"
+                                        ></iframe>
+                                    </div>
+                                    <div className="mt-4 p-2 text-center">
+                                        <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-chalco-blue font-bold text-sm hover:underline">
+                                            <span>Abrir ubicación directa en Google Maps</span>
+                                            <i data-lucide="external-link" className="w-4 h-4"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Footer = () => {
+            return (
+                <footer className="bg-chalco-cacao text-white pt-16 pb-12 relative overflow-hidden border-t border-chalco-champagne/30">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                        <div className="grid md:grid-cols-4 gap-10 pb-12 border-b border-chalco-champagne/20">
+                            <div className="md:col-span-2 space-y-4">
+                                <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-white overflow-hidden shadow-md">
+                                        <img src="./helados%20logo%20png.png" alt="Logo Helados Chalco" className="w-full h-full object-contain" />
+                                    </div>
+                                    <span className="font-serif font-bold text-xl tracking-tight text-white">Helados Chalco Naucalpan</span>
+                                </div>
+                                <p className="text-chalco-champagne/90 text-sm max-w-sm leading-relaxed font-normal">
+                                    Una experiencia diferente servida directamente en la cáscara natural de la fruta. El detalle perfecto para compartir en familia.
+                                </p>
+                            </div>
+
+                            <div>
+                                <h4 className="font-serif font-bold text-lg mb-4 text-chalco-champagne">Navegación</h4>
+                                <ul className="space-y-2 text-sm text-stone-300">
+                                    <li><a href="#inicio" className="hover:text-white transition-colors">Inicio</a></li>
+                                    <li><a href="#nosotros" className="hover:text-white transition-colors">Nosotros</a></li>
+                                    <li><a href="#ventajas" className="hover:text-white transition-colors">¿Por qué elegirnos?</a></li>
+                                    <li><a href="#menu" className="hover:text-white transition-colors">Menú</a></li>
+                                    <li><a href="#galeria" className="hover:text-white transition-colors">Galería</a></li>
+                                    <li><a href="#contacto" className="hover:text-white transition-colors">Ubicación</a></li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 className="font-serif font-bold text-lg mb-4 text-chalco-champagne">Sucursal Naucalpan</h4>
+                                <ul className="space-y-2 text-sm text-stone-300">
+                                    <li>Lic. Isidro Fabela 11, Emiliano Zapata</li>
+                                    <li>53426 Naucalpan de Juárez, MEX</li>
+                                    <li className="pt-2 text-white font-bold">Teléfono: 55 5136 8112</li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div className="pt-8 text-xs text-stone-400">
+                            <p>© 2026 Helados Chalco Naucalpan. Todos los derechos reservados.</p>
+                            <p className="mt-3 text-stone-300 leading-relaxed">
+                                Las fotografías, imágenes y demás elementos visuales contenidos en este sitio son propiedad de Helados Chalco Naucalpan y no podrán ser utilizados, reproducidos o distribuidos sin autorización previa por escrito.
+                            </p>
+                        </div>
+                    </div>
+                </footer>
+            );
+        };
+
+        const App = () => {
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, []);
+
+            return (
+                <div className="min-h-screen relative">
+                    <Navbar />
+                    <main>
+                        <Hero />
+                        <AboutMemorable />
+                        <Features />
+                        <Menu />
+                        <Gallery />
+                        <Reviews />
+                        <ContactAndMap />
+                    </main>
+                    <Footer />
+
+                    <a 
+                        href={WHATSAPP_URL} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="fixed bottom-6 right-6 z-50 bg-chalco-champagne hover:bg-chalco-honey text-chalco-blue p-4 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center border border-chalco-champagne"
+                        aria-label="Contactar por WhatsApp"
+                    >
+                        <i data-lucide="message-circle" className="w-7 h-7"></i>
+                    </a>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
